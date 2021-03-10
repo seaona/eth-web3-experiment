@@ -1,7 +1,7 @@
-const Web3 = require('web3')
-require('dotenv-safe').config()
+const Web3 = require('web3');
+require('dotenv-safe').config();
 
-const url = `${process.env.INFURA_URL}`;
+const url = `${process.env.SERVER_URL}`;
 const web3 = new Web3(url);
 
 // Web3 Functions
@@ -16,13 +16,18 @@ let transformBalanceFromWeiToUnit = (balance, unit) => {
 
 let getTxCount = (address) => {
     web3.eth.getTransactionCount(address)
-    .then(console.log);
+    .then(txCount => console.log(txCount));
 }
 
 let contractMethods = () => { 
     contract.methods.name().call((err, result) => { console.log(result )})
     contract.methods.symbol().call((err, result) => { console.log(result )})
     contract.methods.totalSupply().call((err, result) => { console.log(result )})
+}
+
+let getAccounts = () => {
+    web3.eth.getAccounts()
+        .then(accounts => console.log(accounts))
 }
 
 // Sample Test Data
@@ -38,4 +43,5 @@ const contract = new web3.eth.Contract(abi, contractAddress);
 getBalanceInWei(addr);
 transformBalanceFromWeiToUnit(balance, unit);
 getTxCount(addr);
-contractMethods()
+contractMethods();
+getAccounts();
